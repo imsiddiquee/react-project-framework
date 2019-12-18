@@ -24,6 +24,10 @@ export function saveGenre(genre) {
   return http.post(apiEndpoint, genre);
 }
 
+export function fileUpload(fileData) {
+  return http.post(apiEndpoint + "/" + "fileUpload", fileData);
+}
+
 export function deleteGenre(genreId) {
   return http.delete(genreUrl(genreId));
 }

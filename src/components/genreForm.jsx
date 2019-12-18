@@ -2,14 +2,15 @@ import React from "react";
 import Joi from "joi-browser";
 import Form from "./common/form";
 import { toast } from "react-toastify";
-import { getGenre, saveGenre } from "../services/genreService";
+import { getGenre, saveGenre, fileUpload } from "../services/genreService";
 
 class GenreForm extends Form {
   state = {
     data: {
       name: ""
     },
-    errors: {}
+    errors: {},
+    imagePreviewUrl: null
   };
 
   schema = {
@@ -54,12 +55,64 @@ class GenreForm extends Form {
     }
   };
 
+  populateUploadPicture = event => {
+    let reader = new FileReader();
+    reader.onloadend = () => {
+      this.setState({
+        imagePreviewUrl: reader.result
+      });
+    };
+    reader.readAsDataURL(event.target.files[0]);
+  };
+
+  populateStoreUploadPicture = async event => {
+    const fileData = new FormData();
+    fileData.append("file", event.target.files[0]);
+    const { status, data } = await fileUpload(fileData);
+    console.log("response", data.filename);
+  };
+
+  fileChangedHandler = async event => {
+    this.populateUploadPicture(event);
+    this.populateStoreUploadPicture(event);
+  };
+
   render() {
+    let $imagePreview = (
+      <p className="previewText image-container small strong">
+        Please select an Image for Preview
+      </p>
+    );
+    if (this.state.imagePreviewUrl) {
+      $imagePreview = (
+        <div className="image-container">
+          <img
+            src={this.state.imagePreviewUrl}
+            className="img-thumbnail img-fluid"
+            alt="icon"
+            width="100"
+          />
+        </div>
+      );
+    }
+
     return (
       <div className="card">
         <div className="card-body">
           <h1 className="card-title">Genre Form</h1>
           <hr />
+
+          {/* <div className="upload-pics">
+            {$imagePreview}
+            <div className="form-group">
+              <input
+                type="file"
+                className="avatar"
+                onChange={this.fileChangedHandler}
+              />
+            </div>
+          </div> */}
+
           <form onSubmit={this.handleSubmit}>
             {this.renderInput("name", "Genre name", "text", true)}
 
