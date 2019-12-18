@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import Form from "./common/form";
 import { getRentals, deleteRental } from "../services/rentalService";
 import { Link } from "react-router-dom";
+import Progress from "react-progress-2";
 
 class RentalsForm extends Form {
   state = {
@@ -16,7 +17,13 @@ class RentalsForm extends Form {
   }
 
   async componentDidMount() {
-    await this.populateRentals();
+    try {
+      Progress.show();
+      await this.populateRentals();
+      Progress.hide();
+    } catch (error) {
+      Progress.hideAll();
+    }
   }
 
   handleDelete = async post => {

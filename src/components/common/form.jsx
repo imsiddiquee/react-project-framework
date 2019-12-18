@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import Progress from "react-progress-2";
 import Joi from "joi-browser";
 import Input from "./input";
 import Select from "./select";
@@ -30,14 +31,22 @@ class Form extends Component {
   };
 
   handleSubmit = e => {
-    e.preventDefault();
+    try {
+      Progress.show();
 
-    const errors = this.validate();
+      e.preventDefault();
 
-    this.setState({ errors: errors || {} });
-    if (errors) return;
+      const errors = this.validate();
 
-    this.doSubmit();
+      this.setState({ errors: errors || {} });
+      if (errors) return;
+
+      this.doSubmit();
+
+      Progress.hide();
+    } catch (error) {
+      Progress.hideAll();
+    }
   };
 
   handleChange = ({ currentTarget: input }) => {

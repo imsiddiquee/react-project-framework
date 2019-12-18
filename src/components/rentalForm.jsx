@@ -23,8 +23,6 @@ class RentalForm extends Form {
 
   schema = {
     _id: Joi.string(),
-    // phone: Joi.string().allow(""),
-
     customerId: Joi.string()
       .required()
       .label("Customer"),

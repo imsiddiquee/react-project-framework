@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import Progress from "react-progress-2";
 import Movies from "./components/movies";
 import MovieForm from "./components/movieForm";
 import Customers from "./components/customers";
@@ -20,6 +21,7 @@ import CustomerForm from "./components/customerForm";
 import RentalsForm from "./components/rentalsForm";
 import RentalForm from "./components/rentalForm";
 import "react-toastify/dist/ReactToastify.css";
+import "react-progress-2/main.css";
 import "./App.css";
 
 class App extends Component {
@@ -36,6 +38,7 @@ class App extends Component {
     return (
       <React.Fragment>
         <ToastContainer />
+        <Progress.Component />
         <NavBar user={user} />
         <main className="container">
           <Switch>
